@@ -1,5 +1,5 @@
 <?php
-    // Create Database Connection Infomation
+    // Get Info from the environment file
     $env = parse_ini_file(__DIR__ . "/../env/connect.env");
 
     // Create a connection
