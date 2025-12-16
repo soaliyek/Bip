@@ -92,8 +92,8 @@ $colors = getProfileColors();
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-box">
-            <h1>Join Bip</h1>
-            <p class="subtitle">Anonymous peer support chat</p>
+            <h1 style="justify-self: center;">Join Bip</h1>
+            <p class="subtitle" style="justify-self: center;">Anonymous peer support chat</p>
             
             <?php if (!empty($errors)): ?>
                 <div class="alert alert-error">

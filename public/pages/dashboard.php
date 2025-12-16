@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../../includes/session.php';
+require_once __DIR__ . '/../../includes/functions.php';
+require_once __DIR__ . '/../../config/database.php';
 
 requireLogin();
 checkBanStatus();
@@ -60,7 +60,7 @@ $hasFreshExperience = empty($conversations);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Bip</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <div class="app-container">
@@ -98,7 +98,7 @@ $hasFreshExperience = empty($conversations);
                 <?php if ($user['isAdmin']): ?>
                     <a href="admin.php" class="btn btn-secondary btn-block">Admin Panel</a>
                 <?php endif; ?>
-                <a href="/authentication/logout.php" class="btn btn-secondary btn-block">Logout</a>
+                <a href="../../authentication/logout.php" class="btn btn-secondary btn-block">Logout</a>
             </div>
             
             <?php if (!$hasFreshExperience): ?>
@@ -177,6 +177,6 @@ $hasFreshExperience = empty($conversations);
         </div>
     </div>
     
-    <script src="/public/js/dashboard.js"></script>
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>

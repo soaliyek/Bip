@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/database.php';
 
 // Redirect if already logged in
 if (isLoggedIn()) {
-    header('Location: /public/dashboard.php');
+    header('Location: ../public/pages/dashboard.php');
     exit;
 }
 
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "Your account has been banned. Please contact support.";
             } else {
                 loginUser($user['userID']);
-                header('Location: ../public/dashboard.php');
+                header('Location: ../public/pages/dashboard.php');
                 exit;
             }
         } else {
@@ -76,13 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                
+                <p class="auth-link" style="margin-bottom: 10px;">
+                    Don't have an account? <a href="register.php">Register here</a>
+                </p>
+
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
             
-            <p class="auth-link">
-                Don't have an account? <a href="register.php">Register here</a>
-            </p>
+            
         </div>
     </div>
 </body>

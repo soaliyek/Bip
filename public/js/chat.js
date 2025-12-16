@@ -31,7 +31,7 @@ document.getElementById('messageForm').addEventListener('submit', function(e) {
     const content = document.getElementById('messageInput').value.trim();
     if (!content) return;
     
-    fetch('/api/sendmessage.php', {
+    fetch('../../api/sendmessage.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -59,7 +59,7 @@ document.getElementById('messageForm').addEventListener('submit', function(e) {
 // Poll for new messages
 function startPolling() {
     pollingInterval = setInterval(() => {
-        fetch(`/api/getmessages.php?conversationID=${conversationID}&lastMessageID=${lastMessageID}`)
+        fetch(`../../api/getmessages.php?conversationID=${conversationID}&lastMessageID=${lastMessageID}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.messages.length > 0) {
@@ -89,7 +89,8 @@ function appendMessage(message) {
         messageDiv.className = 'message-system';
         messageDiv.textContent = message.content;
     } else {
-        const isOwn = message.senderUserID == <?= $user['userID'] ?>;
+        //const isOwn = message.senderUserID == <?= $user['userID'] ?>;
+        const isOwn = message.senderUserID == $user['userID'];
         messageDiv.className = `message ${isOwn ? 'message-own' : 'message-other'}`;
         messageDiv.dataset.messageId = message.messageID;
         
@@ -202,7 +203,7 @@ reportForm.addEventListener('submit', function(e) {
         reason: formData.get('reason')
     };
     
-    fetch('/api/flagmessage.php', {
+    fetch('../../api/flagmessage.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -247,7 +248,7 @@ stars.forEach(star => {
         });
         
         // Send rating
-        fetch('/api/rateuser.php', {
+        fetch('../../api/rateuser.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -270,7 +271,7 @@ document.querySelectorAll('.btn-flag').forEach(btn => {
     btn.addEventListener('click', function() {
         const flagType = this.dataset.flag;
         
-        fetch('/api/rateuser.php', {
+        fetch('../../api/rateuser.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -307,7 +308,7 @@ window.addEventListener('click', function(e) {
 
 // Presence ping
 setInterval(() => {
-    fetch('/api/ping.php', { method: 'POST' })
+    fetch('../../api/ping.php', { method: 'POST' })
         .catch(err => console.error('Ping failed:', err));
 }, 30000);
 

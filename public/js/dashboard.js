@@ -1,6 +1,6 @@
 // Presence ping every 30 seconds
 setInterval(() => {
-    fetch('/api/ping.php', { method: 'POST' })
+    fetch('../../api/ping.php', { method: 'POST' })
         .catch(err => console.error('Ping failed:', err));
 }, 30000);
 
@@ -11,17 +11,17 @@ document.getElementById('listenBtn')?.addEventListener('click', function() {
 
 // Talk button
 document.getElementById('talkBtn')?.addEventListener('click', function() {
-    window.location.href = '/public/online-users.php';
+    window.location.href = '../pages/online-users.php';
 });
 
 // See Online Users button
 document.getElementById('seeOnlineBtn')?.addEventListener('click', function() {
-    window.location.href = '/public/online-users.php';
+    window.location.href = '../pages/online-users.php';
 });
 
 // Set user mode
 function setMode(mode) {
-    fetch('/api/updatestatus.php', {
+    fetch('../../api/updatestatus.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mode: mode })
@@ -34,7 +34,7 @@ function setMode(mode) {
             }
             // Refresh to see online users or update UI
             if (mode === 'LOOKING_TO_TALK') {
-                window.location.href = '/public/online-users.php';
+                window.location.href = '../pages/online-users.php';
             }
         } else {
             alert('Failed to update status: ' + (data.error || 'Unknown error'));
@@ -70,6 +70,6 @@ if (searchInput && !searchInput.disabled) {
 document.querySelectorAll('.conversation-item').forEach(item => {
     item.addEventListener('click', function() {
         const conversationID = this.dataset.conversationId;
-        window.location.href = `/public/chat.php?id=${conversationID}`;
+        window.location.href = `../pages/chat.php?id=${conversationID}`;
     });
 });

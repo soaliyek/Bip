@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../../includes/session.php';
+require_once __DIR__ . '/../../includes/functions.php';
+require_once __DIR__ . '/../../config/database.php';
 
 requireLogin();
 checkBanStatus();
@@ -11,7 +11,7 @@ $user = getCurrentUser();
 $conversationID = $_GET['id'] ?? null;
 
 if (!$conversationID) {
-    header('Location: /public/dashboard.php');
+    header('Location: dashboard.php');
     exit;
 }
 
@@ -31,7 +31,7 @@ $row = $result->fetch_assoc();
 $stmt->close();
 
 if ($row['count'] == 0) {
-    header('Location: /public/dashboard.php');
+    header('Location: dashboard.php');
     exit;
 }
 
@@ -82,13 +82,13 @@ $stmt->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat with <?= e($interlocutor['username']) ?> - Bip</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <div class="chat-container">
         <!-- Chat Header -->
         <div class="chat-header">
-            <a href="/public/dashboard.php" class="back-button">← Back</a>
+            <a href="dashboard.php" class="back-button">← Back</a>
             <div class="chat-header-user" id="interlocutorProfile" style="cursor: pointer;">
                 <div class="profile-circle" style="background-color: <?= e($interlocutor['profileColor']) ?>"></div>
                 <div class="chat-header-info">
@@ -207,6 +207,6 @@ $stmt->close();
         const conversationID = <?= $conversationID ?>;
         const interlocutorID = <?= $interlocutor['userID'] ?>;
     </script>
-    <script src="/public/js/chat.js"></script>
+    <script src="../js/chat.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../../includes/session.php';
+require_once __DIR__ . '/../../includes/functions.php';
+require_once __DIR__ . '/../../config/database.php';
 
 requireLogin();
 checkBanStatus();
@@ -43,12 +43,12 @@ $stmt->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Users - Bip</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <div class="online-users-container">
         <div class="online-users-header">
-            <a href="/public/dashboard.php" class="back-button">← Back to Conversations</a>
+            <a href="dashboard.php" class="back-button">← Back to Conversations</a>
             <h1>Online Users</h1>
         </div>
         
@@ -93,6 +93,6 @@ $stmt->close();
         </div>
     </div>
     
-    <script src="/public/js/online-users.js"></script>
+    <script src="../js/online-users.js"></script>
 </body>
 </html>

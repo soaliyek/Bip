@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . 'session.php';
+require_once 'session.php';
 
 if (isLoggedIn()) {
     header('Location: ../public/pages/dashboard.php');

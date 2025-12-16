@@ -11,7 +11,7 @@ document.querySelectorAll('.start-conversation-btn').forEach(btn => {
         this.disabled = true;
         this.textContent = 'Starting...';
         
-        fetch('/api/startconversation.php', {
+        fetch('../../api/startconversation.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ listenerID: listenerID })
@@ -19,7 +19,7 @@ document.querySelectorAll('.start-conversation-btn').forEach(btn => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                window.location.href = `/public/chat.php?id=${data.conversationID}`;
+                window.location.href = `../pages/chat.php?id=${data.conversationID}`;
             } else {
                 alert('Failed to start conversation: ' + (data.error || 'Unknown error'));
                 this.disabled = false;
@@ -37,7 +37,7 @@ document.querySelectorAll('.start-conversation-btn').forEach(btn => {
 
 // Presence ping
 setInterval(() => {
-    fetch('/api/ping.php', { method: 'POST' })
+    fetch('../../api/ping.php', { method: 'POST' })
         .catch(err => console.error('Ping failed:', err));
 }, 30000);
 
