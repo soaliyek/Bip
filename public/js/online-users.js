@@ -19,7 +19,7 @@ document.querySelectorAll('.start-conversation-btn').forEach(btn => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                window.location.href = `../pages/chat.php?id=${data.conversationID}`;
+                window.location.href = `app.php?conversation=${data.conversationID}`;
             } else {
                 alert('Failed to start conversation: ' + (data.error || 'Unknown error'));
                 this.disabled = false;

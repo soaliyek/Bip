@@ -9,16 +9,11 @@ if (!isLoggedIn()) {
 
 $data = json_decode(file_get_contents('php://input'), true);
 $messageID = $data['messageID'] ?? null;
-$flagType = $data['flagType'] ?? 'OTHER';
+$flagTypeID = $data['flagTypeID'] ?? null;
 $reason = trim($data['reason'] ?? '');
 
-if (!$messageID) {
-    jsonResponse(['error' => 'Message ID required'], 400);
-}
-
-$validFlags = ['INSULTING', 'SEXUAL', 'THREATENING', 'DISCRIMINATORY', 'SPAM', 'OTHER'];
-if (!in_array($flagType, $validFlags)) {
-    jsonResponse(['error' => 'Invalid flag type'], 400);
+if (!$messageID || !$flagTypeID) {
+    jsonResponse(['error' => 'Message ID and flag type required'], 400);
 }
 
 $conn = getDB();
@@ -59,10 +54,10 @@ if ($row['count'] > 0) {
 
 // Insert report
 $stmt = $conn->prepare("
-    INSERT INTO Report (messageID, reporterUserID, flagType, reason, status) 
+    INSERT INTO Report (messageID, reporterUserID, flagTypeID, reason, status) 
     VALUES (?, ?, ?, ?, 'PENDING')
 ");
-$stmt->bind_param("iiss", $messageID, $currentUserID, $flagType, $reason);
+$stmt->bind_param("iiis", $messageID, $currentUserID, $flagTypeID, $reason);
 $stmt->execute();
 $stmt->close();
 

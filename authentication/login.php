@@ -4,11 +4,12 @@ require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../config/database.php';
 
 // Redirect if already logged in
+/*
 if (isLoggedIn()) {
     header('Location: ../public/pages/app.php');
     exit;
 }
-
+*/
 $error = '';
 
 if (isset($_GET['error']) && $_GET['error'] === 'banned') {
@@ -36,7 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "Your account has been banned. Please contact support.";
             } else {
                 loginUser($user['userID']);
-                header('Location: ../public/pages/app.php');
+                
+                // Check if user has seen welcome page
+                if ($user['hasSeenWelcome'] == 0) {
+                    header('Location: ../public/pages/welcome.php');
+                } else {
+                    header('Location: ../public/pages/app.php');
+                }
                 exit;
             }
         } else {

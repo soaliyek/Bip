@@ -4,11 +4,12 @@ require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../config/database.php';
 
 // Redirect if already logged in
+/*
 if (isLoggedIn()) {
-    header('Location: /public/app.php');
+    header('Location: /public/pages/app.php');
     exit;
 }
-
+*/
 $errors = [];
 $success = '';
 

@@ -80,8 +80,10 @@ $stmt = $conn->prepare("
         m.conversationID,
         reporter.username as reporterUsername,
         sender.username as senderUsername,
-        sender.userID as senderUserID
+        sender.userID as senderUserID,
+        ft.code
     FROM Report r
+    JOIN FlagType ft ON ft.flagTypeID = r.flagTypeID
     JOIN Message m ON r.messageID = m.messageID
     JOIN User reporter ON r.reporterUserID = reporter.userID
     LEFT JOIN User sender ON m.senderUserID = sender.userID
@@ -264,7 +266,8 @@ $confirmedReportsCount = $result->fetch_assoc()['count'];
                     <div class="report-card">
                         <div class="report-header">
                             <div>
-                                <span class="report-flag"><?= e($report['flagType']) ?></span>
+                                <!-- <span class="report-flag"><?= e($report['flagType']) ?></span> -->
+                                <span class="report-flag"><?= e($report['code']) ?></span>
                                 <span class="report-meta">
                                     Reported by <strong><?= e($report['reporterUsername']) ?></strong>
                                     on <?= date('M j, Y g:i A', strtotime($report['createdAt'])) ?>

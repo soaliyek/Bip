@@ -9,7 +9,7 @@ if (!isLoggedIn()) {
 
 $data = json_decode(file_get_contents('php://input'), true);
 $targetUserID = $data['targetUserID'] ?? null;
-$flagType = $data['flagType'] ?? null;
+$flagTypeID = $data['flagTypeID'] ?? null;
 $ratingValue = $data['ratingValue'] ?? null;
 
 if (!$targetUserID) {
@@ -35,24 +35,31 @@ if (!$result->fetch_assoc()) {
 $stmt->close();
 
 // Handle flag type
-if ($flagType) {
-    $validFlags = ['HELPFUL', 'SAFE', 'EMPATHETIC', 'TOXIC', 'DISRESPECTFUL', 'OTHER'];
-    if (!in_array($flagType, $validFlags)) {
+if ($flagTypeID) {
+    // Verify flag type exists and is for users
+    $stmt = $conn->prepare("SELECT code FROM FlagType WHERE flagTypeID = ? AND category IN ('USER', 'BOTH')");
+    $stmt->bind_param("i", $flagTypeID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $flagData = $result->fetch_assoc();
+    $stmt->close();
+    
+    if (!$flagData) {
         jsonResponse(['error' => 'Invalid flag type'], 400);
     }
     
     // Insert user rating/flag
     $stmt = $conn->prepare("
-        INSERT INTO UserRating (raterUserID, targetUserID, flagType, ratingValue) 
+        INSERT INTO UserRating (raterUserID, targetUserID, flagTypeID, ratingValue) 
         VALUES (?, ?, ?, ?)
     ");
-    $stmt->bind_param("iisi", $currentUserID, $targetUserID, $flagType, $ratingValue);
+    $stmt->bind_param("iiii", $currentUserID, $targetUserID, $flagTypeID, $ratingValue);
     $stmt->execute();
     $stmt->close();
     
     // If positive flag, add to safelist
     $positiveFlags = ['HELPFUL', 'SAFE', 'EMPATHETIC'];
-    if (in_array($flagType, $positiveFlags)) {
+    if (in_array($flagData['code'], $positiveFlags)) {
         $stmt = $conn->prepare("
             INSERT IGNORE INTO SafeUser (userID, safeUserID) 
             VALUES (?, ?)
@@ -64,15 +71,15 @@ if ($flagType) {
 }
 
 // Handle star rating
-if ($ratingValue !== null) {
+if ($ratingValue !== null && $flagTypeID === null) {
     if ($ratingValue < 1 || $ratingValue > 5) {
         jsonResponse(['error' => 'Rating must be between 1 and 5'], 400);
     }
     
-    // Insert new rating
+    // Insert new rating without flag
     $stmt = $conn->prepare("
-        INSERT INTO UserRating (raterUserID, targetUserID, flagType, ratingValue) 
-        VALUES (?, ?, 'OTHER', ?)
+        INSERT INTO UserRating (raterUserID, targetUserID, flagTypeID, ratingValue) 
+        VALUES (?, ?, NULL, ?)
     ");
     $stmt->bind_param("iii", $currentUserID, $targetUserID, $ratingValue);
     $stmt->execute();

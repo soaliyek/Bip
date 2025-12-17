@@ -14,6 +14,7 @@ CREATE TABLE User (
   profileColor CHAR(7) NOT NULL DEFAULT '#888888',
   isAdmin TINYINT(1) NOT NULL DEFAULT 0,
   accountStatus ENUM('ACTIVE','WARNED','BANNED') NOT NULL DEFAULT 'ACTIVE',
+  hasSeenWelcome TINYINT(1) NOT NULL DEFAULT 0,
   createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   lastLoginAt DATETIME NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -82,15 +83,50 @@ CREATE TABLE Message (
 CREATE INDEX idx_Message_conversationID_createdAt
   ON Message (conversationID, createdAt);
 
--- 6. Message-level reports (flags)
+-- 6. Flag Types (dynamic flags for messages and users)
+
+CREATE TABLE FlagType (
+  flagTypeID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  code VARCHAR(50) NOT NULL UNIQUE,
+  displayName VARCHAR(100) NOT NULL,
+  description TEXT NULL,
+  category ENUM('MESSAGE','USER','BOTH') NOT NULL,
+  severity ENUM('LOW','MEDIUM','HIGH','CRITICAL') NOT NULL DEFAULT 'MEDIUM',
+  isActive TINYINT(1) NOT NULL DEFAULT 1,
+  createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Insert default flags
+INSERT INTO FlagType (code, displayName, description, category, severity) VALUES
+-- Message flags
+('INSULTING', 'Insulting', 'Rude or insulting language', 'MESSAGE', 'MEDIUM'),
+('SEXUAL', 'Sexual Content', 'Inappropriate sexual content', 'MESSAGE', 'HIGH'),
+('THREATENING', 'Threatening', 'Threats or violent language', 'MESSAGE', 'CRITICAL'),
+('DISCRIMINATORY', 'Discriminatory', 'Discriminatory or hateful speech', 'MESSAGE', 'CRITICAL'),
+('SPAM', 'Spam', 'Spam or repetitive content', 'MESSAGE', 'LOW'),
+('HARASSMENT', 'Harassment', 'Harassing behavior', 'MESSAGE', 'HIGH'),
+
+-- User flags (positive)
+('HELPFUL', 'Helpful', 'Helpful and supportive', 'USER', 'LOW'),
+('SAFE', 'Safe', 'Makes you feel safe', 'USER', 'LOW'),
+('EMPATHETIC', 'Empathetic', 'Shows empathy and understanding', 'USER', 'LOW'),
+
+-- User flags (negative)
+('TOXIC', 'Toxic', 'Toxic behavior', 'USER', 'HIGH'),
+('DISRESPECTFUL', 'Disrespectful', 'Disrespectful or rude', 'USER', 'MEDIUM'),
+('INAPPROPRIATE', 'Inappropriate', 'Inappropriate behavior', 'USER', 'MEDIUM'),
+
+-- Both
+('OTHER', 'Other', 'Other issue (please specify)', 'BOTH', 'LOW');
+
+-- 7. Message-level reports (flags)
 
 CREATE TABLE Report (
   reportID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   messageID BIGINT UNSIGNED NOT NULL,
   reporterUserID INT UNSIGNED NOT NULL,
+  flagTypeID INT UNSIGNED NOT NULL,
   createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  flagType ENUM('INSULTING','SEXUAL','THREATENING','DISCRIMINATORY','SPAM','OTHER')
-           NOT NULL DEFAULT 'OTHER',
   reason TEXT NULL,
   status ENUM('PENDING','CONFIRMED','DISCARDED') NOT NULL DEFAULT 'PENDING',
   handledByAdminID INT UNSIGNED NULL,
@@ -104,13 +140,16 @@ CREATE TABLE Report (
     ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fk_Report_Admin
     FOREIGN KEY (handledByAdminID) REFERENCES User(userID)
-    ON DELETE SET NULL ON UPDATE CASCADE
+    ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT fk_Report_FlagType
+    FOREIGN KEY (flagTypeID) REFERENCES FlagType(flagTypeID)
+    ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE INDEX idx_Report_status_createdAt
   ON Report (status, createdAt);
 
--- 7. Admin penalties (warnings / bans)
+-- 8. Admin penalties (warnings / bans)
 
 CREATE TABLE UserPenalty (
   penaltyID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -128,14 +167,13 @@ CREATE TABLE UserPenalty (
     ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 8. User-to-user ratings / safelist flags
+-- 9. User-to-user ratings / safelist flags
 
 CREATE TABLE UserRating (
   ratingID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   raterUserID INT UNSIGNED NOT NULL,
   targetUserID INT UNSIGNED NOT NULL,
-  flagType ENUM('HELPFUL','SAFE','EMPATHETIC','TOXIC','DISRESPECTFUL','OTHER')
-           NOT NULL DEFAULT 'OTHER',
+  flagTypeID INT UNSIGNED NULL,
   ratingValue TINYINT UNSIGNED NULL,
   createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_UserRating_Rater
@@ -143,13 +181,16 @@ CREATE TABLE UserRating (
     ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fk_UserRating_Target
     FOREIGN KEY (targetUserID) REFERENCES User(userID)
-    ON DELETE CASCADE ON UPDATE CASCADE
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_UserRating_FlagType
+    FOREIGN KEY (flagTypeID) REFERENCES FlagType(flagTypeID)
+    ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE INDEX idx_UserRating_targetUserID
   ON UserRating (targetUserID);
 
--- 9. Optional explicit safelist (can also be derived from UserRating)
+-- 10. Optional explicit safelist (can also be derived from UserRating)
 
 CREATE TABLE SafeUser (
   userID INT UNSIGNED NOT NULL,
