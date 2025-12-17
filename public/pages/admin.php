@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../../includes/session.php';
+require_once __DIR__ . '/../../includes/functions.php';
+require_once __DIR__ . '/../../config/database.php';
 
 requireAdmin();
 updatePresence();
@@ -126,7 +126,7 @@ $confirmedReportsCount = $result->fetch_assoc()['count'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Bip</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <style>
         .admin-container {
             min-height: 100vh;
@@ -210,7 +210,7 @@ $confirmedReportsCount = $result->fetch_assoc()['count'];
     <div class="admin-container">
         <div class="admin-header">
             <h1>Admin Panel</h1>
-            <a href="/public/dashboard.php" class="btn btn-secondary">← Back to Dashboard</a>
+            <a href="dashboard.php" class="btn btn-secondary">← Back to Dashboard</a>
         </div>
         
         <?php if (isset($success)): ?>
