@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/database.php';
 
 // Redirect if already logged in
 if (isLoggedIn()) {
-    header('Location: /public/dashboard.php');
+    header('Location: /public/app.php');
     exit;
 }
 

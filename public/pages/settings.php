@@ -74,7 +74,7 @@ $colors = getProfileColors();
 <body>
     <div class="settings-container">
         <div class="settings-header">
-            <a href="dashboard.php" class="back-button">← Back to Dashboard</a>
+            <a href="app.php" class="back-button">← Back to Dashboard</a>
             <h1>Settings</h1>
         </div>
         

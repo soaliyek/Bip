@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/database.php';
 
 // Redirect if already logged in
 if (isLoggedIn()) {
-    header('Location: ../public/pages/dashboard.php');
+    header('Location: ../public/pages/app.php');
     exit;
 }
 
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "Your account has been banned. Please contact support.";
             } else {
                 loginUser($user['userID']);
-                header('Location: ../public/pages/dashboard.php');
+                header('Location: ../public/pages/app.php');
                 exit;
             }
         } else {

@@ -48,7 +48,7 @@ $stmt->close();
 <body>
     <div class="online-users-container">
         <div class="online-users-header">
-            <a href="dashboard.php" class="back-button">← Back to Conversations</a>
+            <a href="app.php" class="back-button">← Back to Conversations</a>
             <h1>Online Users</h1>
         </div>
         

@@ -210,7 +210,7 @@ $confirmedReportsCount = $result->fetch_assoc()['count'];
     <div class="admin-container">
         <div class="admin-header">
             <h1>Admin Panel</h1>
-            <a href="dashboard.php" class="btn btn-secondary">← Back to Dashboard</a>
+            <a href="app.php" class="btn btn-secondary">← Back to Dashboard</a>
         </div>
         
         <?php if (isset($success)): ?>
