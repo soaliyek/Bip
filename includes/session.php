@@ -42,7 +42,7 @@ function isAdmin() {
 // Require login
 function requireLogin() {
     if (!isLoggedIn()) {
-        header('Location: ../authentication/login.php');
+        header('Location: ../../authentication/login.php');
         exit;
     }
 }
@@ -51,7 +51,7 @@ function requireLogin() {
 function requireAdmin() {
     requireLogin();
     if (!isAdmin()) {
-        header('Location: ../public/pages/dashboard.php');
+        header('Location: app.php');
         exit;
     }
 }
@@ -61,7 +61,7 @@ function checkBanStatus() {
     $user = getCurrentUser();
     if ($user && $user['accountStatus'] === 'BANNED') {
         session_destroy();
-        header('Location: ../authentication/login.php?error=banned');
+        header('Location: ../../authentication/login.php?error=banned');
         exit;
     }
 }
