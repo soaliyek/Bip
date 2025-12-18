@@ -28,7 +28,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("sisi", $status, $adminID, $comment, $reportID);
             $stmt->execute();
             $stmt->close();
+
+            //Trying to make system speak
+            $msg = $conn->prepare("
+                INSERT INTO Message (conversationID, content, isSystem)
+                SELECT m.conversationID, ?, 1
+                FROM Report r
+                JOIN Message m ON r.messageID = m.messageID
+                WHERE r.reportID = ?;
+            ");
+            $msg->bind_param("si", $comment, $reportID);
+            $msg->execute();
+            $msg->close();
+
             $success = "Report handled successfully";
+
+            
         }
     } elseif ($action === 'ban_user') {
         $targetUserID = $_POST['target_user_id'] ?? null;

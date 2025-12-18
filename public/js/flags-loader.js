@@ -194,13 +194,16 @@ function setupReportForm() {
         .then(response => response.json())
         .then(result => {
             if (result.success) {
-                alert('Message reported successfully');
+                //alert('Message reported successfully');
                 const modal = document.getElementById('reportModal');
                 if (modal) modal.style.display = 'none';
                 e.target.reset();
-            } else {
+            }
+            /*
+            else {
                 alert('Failed to report: ' + (result.error || 'Unknown error'));
             }
+            */
         })
         .catch(err => {
             console.error('[Flags] Error reporting message:', err);

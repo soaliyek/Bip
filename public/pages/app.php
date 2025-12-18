@@ -172,7 +172,7 @@ $hasFreshExperience = empty($conversations);
             <!-- <h1 class="logo">BipLogo</h1> -->
         </div>
         <div class="nav-center">
-            <button class="nav-btn" id="bipersBtn">Bipers</button>
+            <button class="nav-btn" id="bipersBtn">Beepers</button>
             <button class="nav-btn" id="talkBtn">Talk</button>
             <button class="nav-btn" id="listenBtn">Listen</button>
             <?php if ($user['isAdmin']): ?>
