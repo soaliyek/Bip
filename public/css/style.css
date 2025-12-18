@@ -7,7 +7,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #D4CC9A 0%, #764ba2 100%);
     min-height: 100vh;
     color: #333;
 }
@@ -132,12 +132,12 @@ body {
 }
 
 .btn-primary {
-    background: #667eea;
+    background: #D4CC9A;
     color: white;
 }
 
 .btn-primary:hover {
-    background: #5568d3;
+    background: #beb783;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
@@ -175,7 +175,7 @@ body {
 }
 
 .btn-send {
-    background: #667eea;
+    background: #D4CC9A;
     color: white;
     padding: 10px 20px;
 }
