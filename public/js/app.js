@@ -465,7 +465,8 @@ function startPresencePing() {
     sendPresencePing();
     
     // Then ping every 30 seconds
-    setInterval(sendPresencePing, 30000);
+    setInterval(sendPresencePing, 10000);
+    //setInterval(sendPresencePing, 30000);
 }
 
 function sendPresencePing() {
