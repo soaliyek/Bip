@@ -238,7 +238,7 @@ $hasFreshExperience = empty($conversations);
             <?php if (!$selectedConversation): ?>
                 <div class="no-conversation-selected">
                     <div class="welcome-message">
-                        <h2>Welcome to Bip!</h2>
+                        <h2>Welcome to Beep!</h2>
                         <p>Select a conversation from the left to start chatting</p>
                         <p>Or click "Talk" to find a listener</p>
                     </div>

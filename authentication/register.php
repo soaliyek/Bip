@@ -87,13 +87,13 @@ $colors = getProfileColors();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Bip</title>
+    <title>Register - Beep</title>
     <link rel="stylesheet" href="../public/css/style.css">
 </head>
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-box">
-            <h1 style="justify-self: center;">Join Bip</h1>
+            <h1 style="justify-self: center;">Join Beep</h1>
             <p class="subtitle" style="justify-self: center;">Anonymous peer support chat</p>
             
             <?php if (!empty($errors)): ?>

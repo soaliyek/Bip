@@ -57,13 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Bip</title>
+    <title>Login - Beep</title>
     <link rel="stylesheet" href="../public/css/style.css">
 </head>
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-box">
-            <h1>Welcome to Bip</h1>
+            <h1>Welcome to Beep</h1>
             <p class="subtitle">Anonymous peer support chat</p>
             
             <?php if ($error): ?>
