@@ -75,15 +75,7 @@ Users select from a predefined palette of 12 colors that serve as their "avatar"
 
 - All passwords are hashed using PHP's `password_hash()`
 - SQL injection prevention via PDO prepared statements
-- XSS prevention via output escaping
-- CSRF protection recommended for production (add tokens)
 - Input validation on both client and server side
-
-## Browser Support
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
 
 ## Acknowledgments
 
